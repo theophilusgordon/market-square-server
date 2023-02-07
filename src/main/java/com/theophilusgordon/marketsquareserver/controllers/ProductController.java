@@ -17,6 +17,8 @@ public class ProductController {
 
     @PostMapping("")
     public Product createProduct(@RequestBody Product product){
+        System.out.println("hello");
+        System.out.println(product.toString());
         return productService.createProduct(product);
     }
 
