@@ -5,6 +5,7 @@ import com.theophilusgordon.marketsquareserver.services.ProductService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/v1/products")
@@ -17,8 +18,6 @@ public class ProductController {
 
     @PostMapping("")
     public Product createProduct(@RequestBody Product product){
-        System.out.println("hello");
-        System.out.println(product.toString());
         return productService.createProduct(product);
     }
 
@@ -28,17 +27,17 @@ public class ProductController {
     }
 
     @GetMapping("/{id}")
-    public Product getProductById(@PathVariable Long id){
+    public Product getProductById(@PathVariable UUID id){
         return productService.getProductById(id);
     }
 
     @PutMapping("/{id}")
-    public Product updateProduct(@PathVariable Long id, @RequestBody Product product){
+    public Product updateProduct(@PathVariable UUID id, @RequestBody Product product){
         return productService.updateProduct(product);
     }
 
     @DeleteMapping("/{id}")
-    public void deleteProduct(@PathVariable Long id){
+    public void deleteProduct(@PathVariable UUID id){
         productService.deleteProduct(id);
     }
 }

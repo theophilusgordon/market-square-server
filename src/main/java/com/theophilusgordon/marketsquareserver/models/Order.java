@@ -7,13 +7,12 @@ import java.util.UUID;
 
 @Getter
 @Setter
-public class Product {
+public class Order {
     private UUID id;
-    private String name;
-    private String description;
-    private String price;
-    private String image;
-    private String category;
+    private UUID userId;
+    private String productId;
     private String quantity;
-    private String seller;
+    private String price;
+    private String status;
+    private String date;
 }
