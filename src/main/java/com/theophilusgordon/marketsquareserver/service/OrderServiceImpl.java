@@ -1,15 +1,18 @@
-package com.theophilusgordon.marketsquareserver.services;
+package com.theophilusgordon.marketsquareserver.service;
 
-import com.theophilusgordon.marketsquareserver.Exceptions.OrderNotFoundException;
-import com.theophilusgordon.marketsquareserver.entities.OrderEntity;
-import com.theophilusgordon.marketsquareserver.models.Order;
-import com.theophilusgordon.marketsquareserver.repositories.OrderRepository;
+import com.theophilusgordon.marketsquareserver.Exceptions.OrderException;
+import com.theophilusgordon.marketsquareserver.model.Order;
+import com.theophilusgordon.marketsquareserver.repository.OrderRepository;
 import org.springframework.beans.BeanUtils;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
 
+@Service
 public class OrderServiceImpl implements OrderService {
     private final OrderRepository orderRepository;
 
@@ -19,7 +22,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Order createOrder(Order order) {
-        OrderEntity orderEntity = new OrderEntity();
+        Order orderEntity = new Order();
 
         BeanUtils.copyProperties(order, orderEntity);
         orderRepository.save(orderEntity);
@@ -27,12 +30,22 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public Order getOrderById(UUID id) {
-        return orderRepository.findById(id).map(orderEntity -> {
+    public List<Order> getAllOrders() {
+        List<Order> orderEntities = (List<Order>) orderRepository.findAll();
+        return orderEntities.stream().map(orderEntity -> {
             Order order = new Order();
             BeanUtils.copyProperties(orderEntity, order);
             return order;
-        }).orElseThrow(() -> new OrderNotFoundException("Order not found with id: " + id));
+        }).toList();
+    }
+
+    @Override
+    public Optional<Order> getOrderById(UUID id) {
+        return Optional.ofNullable(orderRepository.findById(id).map(orderEntity -> {
+            Order order = new Order();
+            BeanUtils.copyProperties(orderEntity, order);
+            return order;
+        }).orElseThrow(() -> new OrderException("Order not found with id: " + id)));
     }
 
     @Override
@@ -41,14 +54,14 @@ public class OrderServiceImpl implements OrderService {
             BeanUtils.copyProperties(order, orderEntity);
             orderRepository.save(orderEntity);
             return order;
-        }).orElseThrow(() -> new OrderNotFoundException("Order not found with id: " + order.getId()));
+        }).orElseThrow(() -> new OrderException("Order not found with id: " + order.getId()));
     }
 
     @Override
     public void deleteOrder(UUID id) {
         boolean orderExists = orderRepository.existsById(id);
         if(!orderExists){
-            throw new OrderNotFoundException("Order not found with id: " + id);
+            throw new OrderException("Order not found with id: " + id);
         }
         orderRepository.deleteById(id);
         ResponseEntity.ok(Map.of("message", "Order deleted successfully!"));

@@ -1,34 +1,27 @@
-package com.theophilusgordon.marketsquareserver.entities;
+package com.theophilusgordon.marketsquareserver.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
+import java.math.BigDecimal;
 import java.util.UUID;
 
 @Entity
-@Getter
-@Setter
-@ToString
-@RequiredArgsConstructor
-@Table(name = "products")
-public class ProductEntity {
+@Data
+public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
-
     @NotNull
     private String name;
     private String description;
-
     @NotNull
-    private String price;
+    private BigDecimal price;
     private String image;
-
     @NotNull
     private String category;
-    private String quantity;
-
-    @NotNull
-    private String seller;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User seller;
 }

@@ -1,9 +1,10 @@
-package com.theophilusgordon.marketsquareserver.controllers;
+package com.theophilusgordon.marketsquareserver.controller;
 
-import com.theophilusgordon.marketsquareserver.models.Order;
-import com.theophilusgordon.marketsquareserver.services.OrderService;
+import com.theophilusgordon.marketsquareserver.model.Order;
+import com.theophilusgordon.marketsquareserver.service.OrderService;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Optional;
 import java.util.UUID;
 
 @RestController
@@ -21,7 +22,7 @@ public class OrderController {
     }
 
     @GetMapping("/{id}")
-    public Order getOrderById(@PathVariable UUID id){
+    public Optional<Order> getOrderById(@PathVariable UUID id){
         return orderService.getOrderById(id);
     }
 

@@ -1,10 +1,11 @@
-package com.theophilusgordon.marketsquareserver.controllers;
+package com.theophilusgordon.marketsquareserver.controller;
 
-import com.theophilusgordon.marketsquareserver.models.Product;
-import com.theophilusgordon.marketsquareserver.services.ProductService;
+import com.theophilusgordon.marketsquareserver.model.Product;
+import com.theophilusgordon.marketsquareserver.service.ProductService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @RestController
@@ -27,7 +28,7 @@ public class ProductController {
     }
 
     @GetMapping("/{id}")
-    public Product getProductById(@PathVariable UUID id){
+    public Optional<Product> getProductById(@PathVariable UUID id){
         return productService.getProductById(id);
     }
 
