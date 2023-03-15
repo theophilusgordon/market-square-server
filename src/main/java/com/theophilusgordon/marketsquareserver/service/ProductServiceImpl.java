@@ -1,6 +1,6 @@
 package com.theophilusgordon.marketsquareserver.service;
 
-import com.theophilusgordon.marketsquareserver.Exceptions.ProductException;
+import com.theophilusgordon.marketsquareserver.exceptions.ProductException;
 import com.theophilusgordon.marketsquareserver.model.Product;
 import com.theophilusgordon.marketsquareserver.repository.ProductRepository;
 import org.springframework.beans.BeanUtils;

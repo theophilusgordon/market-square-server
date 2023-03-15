@@ -1,4 +1,4 @@
-package com.theophilusgordon.marketsquareserver.Exceptions;
+package com.theophilusgordon.marketsquareserver.exceptions;
 
 public class UserException extends RuntimeException{
     public UserException(String message) {

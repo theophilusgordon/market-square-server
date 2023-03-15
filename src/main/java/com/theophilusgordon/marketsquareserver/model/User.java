@@ -26,6 +26,7 @@ public class User {
     private String city;
     private String state;
     private String country;
-    @OneToMany(mappedBy = "seller")
+    @OneToMany
+    @JoinColumn(name = "user_id")
     private List<Product> products;
 }

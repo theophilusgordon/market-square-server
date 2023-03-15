@@ -1,6 +1,6 @@
 package com.theophilusgordon.marketsquareserver.service;
 
-import com.theophilusgordon.marketsquareserver.Exceptions.OrderException;
+import com.theophilusgordon.marketsquareserver.exceptions.OrderException;
 import com.theophilusgordon.marketsquareserver.model.Order;
 import com.theophilusgordon.marketsquareserver.repository.OrderRepository;
 import org.springframework.beans.BeanUtils;

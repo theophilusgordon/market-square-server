@@ -1,6 +1,6 @@
 package com.theophilusgordon.marketsquareserver.service;
 
-import com.theophilusgordon.marketsquareserver.Exceptions.UserException;
+import com.theophilusgordon.marketsquareserver.exceptions.UserException;
 import com.theophilusgordon.marketsquareserver.model.User;
 import com.theophilusgordon.marketsquareserver.repository.UserRepository;
 import org.springframework.beans.BeanUtils;

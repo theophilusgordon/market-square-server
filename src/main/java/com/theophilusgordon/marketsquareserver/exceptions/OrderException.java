@@ -1,4 +1,4 @@
-package com.theophilusgordon.marketsquareserver.Exceptions;
+package com.theophilusgordon.marketsquareserver.exceptions;
 
 public class OrderException extends RuntimeException{
     public OrderException(String message) {

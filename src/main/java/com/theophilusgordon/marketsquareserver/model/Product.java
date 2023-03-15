@@ -22,6 +22,6 @@ public class Product {
     @NotNull
     private String category;
     @ManyToOne
-    @JoinColumn(name = "user_id")
+//    @JoinColumn(name = "user_id")
     private User seller;
 }
