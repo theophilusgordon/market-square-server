@@ -1,5 +1,6 @@
 package com.theophilusgordon.marketsquareserver.service;
 
+import com.theophilusgordon.marketsquareserver.dto.ProductDto;
 import com.theophilusgordon.marketsquareserver.exception.ProductException;
 import com.theophilusgordon.marketsquareserver.model.Product;
 import com.theophilusgordon.marketsquareserver.model.User;
@@ -25,12 +26,11 @@ public class ProductServiceImpl implements ProductService {
         this.userRepository = userRepository;
     }
     @Override
-    public Product createProduct(Product product) {
-        User seller = userRepository.findById(product.getSellerId())
-            .orElseThrow(() -> new ProductException("User not found with id: " + product.getSeller().getId()));
-        System.out.println(seller);
+    public Product createProduct(ProductDto productDto) {
+        User seller = userRepository.findById(UUID.fromString(productDto.getSellerId()))
+            .orElseThrow(() -> new ProductException("User not found with id: " + productDto.getSeller().getId()));
         Product productEntity = new Product();
-        BeanUtils.copyProperties(product, productEntity);
+        BeanUtils.copyProperties(productDto, productEntity);
         productEntity.setSeller(seller);
         productRepository.save(productEntity);
         return productEntity;
@@ -38,7 +38,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public List<Product> getAllProducts() {
-        List<Product> productEntities = (List<Product>) productRepository.findAll();
+        List<Product> productEntities = productRepository.findAll();
         return productEntities.stream().map(productEntity -> {
             Product product = new Product();
             BeanUtils.copyProperties(productEntity, product);

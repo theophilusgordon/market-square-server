@@ -1,5 +1,6 @@
 package com.theophilusgordon.marketsquareserver.controller;
 
+import com.theophilusgordon.marketsquareserver.dto.ReviewDto;
 import com.theophilusgordon.marketsquareserver.model.Review;
 import com.theophilusgordon.marketsquareserver.service.ReviewService;
 import org.springframework.web.bind.annotation.*;
@@ -17,8 +18,8 @@ public class ReviewController {
     }
 
     @PostMapping("/{productId}")
-    public Review createReview(@PathVariable UUID productId, @RequestBody Review review){
-        return reviewService.createReview(productId, review);
+    public Review createReview(@PathVariable UUID productId, @RequestBody ReviewDto reviewDto){
+        return reviewService.createReview(productId, reviewDto);
     }
 
     @GetMapping("/{id}")
@@ -32,8 +33,8 @@ public class ReviewController {
     }
 
     @PutMapping("/{id}")
-    public Review updateReview(@PathVariable UUID id, @RequestBody Review review){
-        return reviewService.updateReview(review);
+    public Optional<Review> updateReview(@PathVariable UUID id, @RequestBody ReviewDto review){
+        return reviewService.updateReview(id, review);
     }
 
     @DeleteMapping("/{id}")

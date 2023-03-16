@@ -2,6 +2,7 @@ package com.theophilusgordon.marketsquareserver.utils.mapper;
 
 import com.theophilusgordon.marketsquareserver.dto.*;
 import com.theophilusgordon.marketsquareserver.model.*;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -22,7 +23,7 @@ public class EntityObjectMapperImpl implements EntityObjectMapper{
     }
 
     @Override
-    public User convertToUser(UserDto userDto) {
+    public User convertToUserEntity(UserDto userDto) {
         User user = new User();
         user.setId(UUID.fromString(userDto.getId()));
         user.setFirstName(userDto.getFirstName());
@@ -38,12 +39,27 @@ public class EntityObjectMapperImpl implements EntityObjectMapper{
 
     @Override
     public ProductDto convertToProductDto(Product product) {
-        return null;
+        ProductDto productDto = new ProductDto();
+        BeanUtils.copyProperties(product, productDto);
+        return productDto;
     }
 
     @Override
-    public Product convertToProduct(ProductDto productDto) {
-        return null;
+    public Product convertToProductEntity(ProductDto productDto) {
+        Product product = new Product();
+        BeanUtils.copyProperties(productDto, product);
+        return product;
+    }
+
+    @Override
+    public List<ProductDto> convertToProductDtoList(List<Product> productEntities) {
+        ProductDto productDto = new ProductDto();
+        List<ProductDto> productDtoList = new ArrayList<>();
+        for(Product productEntity : productEntities){
+            BeanUtils.copyProperties(productEntity, productDto);
+            productDtoList.add(productDto);
+        }
+        return productDtoList;
     }
 
     @Override
@@ -52,7 +68,7 @@ public class EntityObjectMapperImpl implements EntityObjectMapper{
     }
 
     @Override
-    public Order convertToOrder(OrderDto orderDto) {
+    public Order convertToOrderEntity(OrderDto orderDto) {
         return null;
     }
 
@@ -62,7 +78,7 @@ public class EntityObjectMapperImpl implements EntityObjectMapper{
     }
 
     @Override
-    public Review convertToReview(ReviewDto reviewDto) {
+    public Review convertToReviewEntity(ReviewDto reviewDto) {
         return null;
     }
 
@@ -72,7 +88,7 @@ public class EntityObjectMapperImpl implements EntityObjectMapper{
     }
 
     @Override
-    public Cart convertToCart(CartDto cartDto) {
+    public Cart convertToCartEntity(CartDto cartDto) {
         return null;
     }
 
@@ -82,7 +98,7 @@ public class EntityObjectMapperImpl implements EntityObjectMapper{
     }
 
     @Override
-    public Payment convertToPayment(PaymentDto paymentDto) {
+    public Payment convertToPaymentEntity(PaymentDto paymentDto) {
         return null;
     }
 

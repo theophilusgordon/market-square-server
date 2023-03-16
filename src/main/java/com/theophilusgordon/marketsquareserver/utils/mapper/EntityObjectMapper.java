@@ -9,22 +9,23 @@ import java.util.Optional;
 public interface EntityObjectMapper {
     UserDto convertToUserDto(User user);
     Optional<UserDto> convertToUserDtoOptional(User user);
-    User convertToUser(UserDto userDto);
+    List<UserDto> convertToUserDtoList(List<User> userEntities);
+    User convertToUserEntity(UserDto userDto);
 
     ProductDto convertToProductDto(Product product);
-    Product convertToProduct(ProductDto productDto);
+    Product convertToProductEntity(ProductDto productDto);
+    List<ProductDto> convertToProductDtoList(List<Product> productEntities);
 
     OrderDto convertToOrderDto(Order order);
-    Order convertToOrder(OrderDto orderDto);
+    Order convertToOrderEntity(OrderDto orderDto);
 
     ReviewDto convertToReviewDto(Review review);
-    Review convertToReview(ReviewDto reviewDto);
+    Review convertToReviewEntity(ReviewDto reviewDto);
 
     CartDto convertToCartDto(Cart cart);
-    Cart convertToCart(CartDto cartDto);
+    Cart convertToCartEntity(CartDto cartDto);
 
     PaymentDto convertToPaymentDto(Payment payment);
-    Payment convertToPayment(PaymentDto paymentDto);
+    Payment convertToPaymentEntity(PaymentDto paymentDto);
 
-    List<UserDto> convertToUserDtoList(List<User> userEntities);
 }

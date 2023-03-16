@@ -1,9 +1,6 @@
 package com.theophilusgordon.marketsquareserver.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Data;
 
 import java.util.UUID;
@@ -13,9 +10,14 @@ import java.util.UUID;
 public class Review {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID  id;
-    private String productId;
-    private String userId;
+    private UUID id;
+
+    @ManyToOne
+    @JoinColumn(name = "product_id", referencedColumnName = "id")
+    private Product product;
+    @ManyToOne
+    @JoinColumn(name = "reviewer_id", referencedColumnName = "id")
+    private User reviewer;
     private String comment;
     private String rating;
 }

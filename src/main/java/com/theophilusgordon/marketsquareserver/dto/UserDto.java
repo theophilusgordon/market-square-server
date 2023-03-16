@@ -2,7 +2,6 @@ package com.theophilusgordon.marketsquareserver.dto;
 
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
-import lombok.Getter;
 
 @Data
 public class UserDto {
