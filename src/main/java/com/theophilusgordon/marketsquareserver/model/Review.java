@@ -8,7 +8,7 @@ import lombok.Data;
 
 import java.util.UUID;
 
-@Entity
+@Entity(name = "reviews")
 @Data
 public class Review {
     @Id

@@ -1,4 +1,4 @@
-package com.theophilusgordon.marketsquareserver.exceptions;
+package com.theophilusgordon.marketsquareserver.exception;
 
 import java.util.UUID;
 

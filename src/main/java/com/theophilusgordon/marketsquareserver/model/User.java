@@ -1,13 +1,13 @@
 package com.theophilusgordon.marketsquareserver.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
-import java.util.List;
 import java.util.UUID;
 
-@Entity
+@Entity(name = "users")
 @Data
 public class User {
     @Id
@@ -17,6 +17,7 @@ public class User {
     private String firstName;
     @NotNull
     private String lastName;
+    @Email
     @NotNull
     private String email;
     @NotNull
@@ -26,7 +27,4 @@ public class User {
     private String city;
     private String state;
     private String country;
-    @OneToMany
-    @JoinColumn(name = "user_id")
-    private List<Product> products;
 }

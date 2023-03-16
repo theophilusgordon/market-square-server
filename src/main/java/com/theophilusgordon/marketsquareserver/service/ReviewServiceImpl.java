@@ -1,6 +1,6 @@
 package com.theophilusgordon.marketsquareserver.service;
 
-import com.theophilusgordon.marketsquareserver.exceptions.ReviewException;
+import com.theophilusgordon.marketsquareserver.exception.ReviewException;
 import com.theophilusgordon.marketsquareserver.model.Review;
 import com.theophilusgordon.marketsquareserver.repository.ReviewRepository;
 import org.springframework.beans.BeanUtils;

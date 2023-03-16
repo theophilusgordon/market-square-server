@@ -7,7 +7,7 @@ import lombok.*;
 import java.math.BigDecimal;
 import java.util.UUID;
 
-@Entity
+@Entity(name = "products")
 @Data
 public class Product {
     @Id
@@ -21,7 +21,8 @@ public class Product {
     private String image;
     @NotNull
     private String category;
-    @ManyToOne
-//    @JoinColumn(name = "user_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User seller;
+    private UUID sellerId;
 }

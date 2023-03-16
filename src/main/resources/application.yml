@@ -1,0 +1,22 @@
+server:
+    error:
+        include-message: always
+        include-binding-errors: always
+#    port: 9000
+#    servlet:
+#        context-path: /market-square
+spring:
+    datasource:
+        url: jdbc:postgresql://localhost:5432/market-square-db
+        username: postgres
+        password: gordon@2011
+    jpa:
+        hibernate:
+            ddl-auto: update
+        show-sql: true
+hibernate:
+    dialect: org.hibernate.dialect.PostgreSQLDialect
+
+security:
+    basic:
+        enabled: false

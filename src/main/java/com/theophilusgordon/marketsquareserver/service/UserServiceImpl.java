@@ -1,8 +1,10 @@
 package com.theophilusgordon.marketsquareserver.service;
 
-import com.theophilusgordon.marketsquareserver.exceptions.UserException;
+import com.theophilusgordon.marketsquareserver.dto.UserDto;
+import com.theophilusgordon.marketsquareserver.exception.UserException;
 import com.theophilusgordon.marketsquareserver.model.User;
 import com.theophilusgordon.marketsquareserver.repository.UserRepository;
+import com.theophilusgordon.marketsquareserver.utils.mapper.EntityObjectMapper;
 import org.springframework.beans.BeanUtils;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -17,9 +19,11 @@ import java.util.UUID;
 @Service
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
+    private final EntityObjectMapper entityObjectMapper;
 
-    public UserServiceImpl(UserRepository userRepository) {
+    public UserServiceImpl(UserRepository userRepository, EntityObjectMapper entityObjectMapper) {
         this.userRepository = userRepository;
+        this.entityObjectMapper = entityObjectMapper;
     }
     @Override
     public User createUser(User user) {

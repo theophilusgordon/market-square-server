@@ -1,4 +1,4 @@
-package com.theophilusgordon.marketsquareserver.exceptions;
+package com.theophilusgordon.marketsquareserver.exception;
 
 public class ReviewException extends RuntimeException {
     public ReviewException(String message) {

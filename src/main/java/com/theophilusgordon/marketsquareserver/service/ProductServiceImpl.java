@@ -1,8 +1,10 @@
 package com.theophilusgordon.marketsquareserver.service;
 
-import com.theophilusgordon.marketsquareserver.exceptions.ProductException;
+import com.theophilusgordon.marketsquareserver.exception.ProductException;
 import com.theophilusgordon.marketsquareserver.model.Product;
+import com.theophilusgordon.marketsquareserver.model.User;
 import com.theophilusgordon.marketsquareserver.repository.ProductRepository;
+import com.theophilusgordon.marketsquareserver.repository.UserRepository;
 import org.springframework.beans.BeanUtils;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -16,15 +18,20 @@ import java.util.UUID;
 public class ProductServiceImpl implements ProductService {
 
     private final ProductRepository productRepository;
+    private final UserRepository userRepository;
 
-    public ProductServiceImpl(ProductRepository productRepository) {
+    public ProductServiceImpl(ProductRepository productRepository, UserRepository userRepository) {
         this.productRepository = productRepository;
+        this.userRepository = userRepository;
     }
     @Override
     public Product createProduct(Product product) {
+        User seller = userRepository.findById(product.getSellerId())
+            .orElseThrow(() -> new ProductException("User not found with id: " + product.getSeller().getId()));
+        System.out.println(seller);
         Product productEntity = new Product();
-
         BeanUtils.copyProperties(product, productEntity);
+        productEntity.setSeller(seller);
         productRepository.save(productEntity);
         return productEntity;
     }
