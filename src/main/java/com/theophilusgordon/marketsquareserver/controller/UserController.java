@@ -24,8 +24,8 @@ public class UserController {
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("")
-    public UserDto createUser(@RequestBody User user){
-        User createUser = userService.createUser(user);
+    public UserDto createUser(@RequestBody UserDto userDto){
+        User createUser = userService.createUser(userDto);
         return entityObjectMapper.convertToUserDto(createUser);
     }
 
@@ -60,8 +60,8 @@ public class UserController {
 
     @ResponseStatus(HttpStatus.OK)
     @PutMapping("/{id}")
-    public UserDto updateUser(@PathVariable UUID id, @RequestBody User user){
-        User updatedUser = userService.updateUser(id, user);
+    public UserDto updateUser(@PathVariable UUID id, @RequestBody UserDto userDto){
+        User updatedUser = userService.updateUser(id, userDto);
         return entityObjectMapper.convertToUserDto(updatedUser);
     }
 

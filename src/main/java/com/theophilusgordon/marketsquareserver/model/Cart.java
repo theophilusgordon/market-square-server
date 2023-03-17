@@ -1,10 +1,7 @@
 package com.theophilusgordon.marketsquareserver.model;
 
-import jakarta.annotation.Generated;
 import jakarta.persistence.*;
 import lombok.*;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.math.BigDecimal;

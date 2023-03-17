@@ -8,10 +8,10 @@ import java.util.Optional;
 import java.util.UUID;
 
 public interface UserService {
-    User createUser(User user);
+    User createUser(UserDto userDto);
     User loginUser(User user);
     List<User> getAllUsers();
     Optional<User> getUserById(UUID id);
-    User updateUser(UUID id, User user);
+    User updateUser(UUID id, UserDto userDto);
     void deleteUser(UUID id);
 }

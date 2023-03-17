@@ -1,14 +1,12 @@
 package com.theophilusgordon.marketsquareserver.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.theophilusgordon.marketsquareserver.model.enums.UserType;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 
 @Entity(name = "users")
@@ -27,6 +25,8 @@ public class User {
     private String email;
     @NotNull
     private String password;
+    @Enumerated(EnumType.STRING)
+    private UserType role;
     private String phoneNumber;
     private String address;
     private String city;

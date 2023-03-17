@@ -1,7 +1,9 @@
 package com.theophilusgordon.marketsquareserver.service;
 
+import com.theophilusgordon.marketsquareserver.dto.UserDto;
 import com.theophilusgordon.marketsquareserver.exception.UserException;
 import com.theophilusgordon.marketsquareserver.model.User;
+import com.theophilusgordon.marketsquareserver.model.enums.UserType;
 import com.theophilusgordon.marketsquareserver.repository.UserRepository;
 import com.theophilusgordon.marketsquareserver.utils.mapper.EntityObjectMapper;
 import org.springframework.beans.BeanUtils;
@@ -19,16 +21,16 @@ import java.util.UUID;
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
 
-    public UserServiceImpl(UserRepository userRepository, EntityObjectMapper entityObjectMapper) {
+    public UserServiceImpl(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
     @Override
-    public User createUser(User user) {
+    public User createUser(UserDto userDto) {
         User userEntity = new User();
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder(10, new SecureRandom());
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-
-        BeanUtils.copyProperties(user, userEntity);
+        userEntity.setPassword(passwordEncoder.encode(userDto.getPassword()));
+        userType(userDto, userEntity);
+        BeanUtils.copyProperties(userDto, userEntity);
         userRepository.save(userEntity);
         return userEntity;
     }
@@ -68,57 +70,57 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User updateUser(UUID id, User user) {
+    public User updateUser(UUID id, UserDto userDto) {
         boolean userExists = userRepository.existsById(id);
         if(!userExists){
             throw new UserException("User not found with id: " + id);
         }
 
-        if(user.getPassword() != null){
-            BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder(10, new SecureRandom());
-            user.setPassword(passwordEncoder.encode(user.getPassword()));
-        }
-
         User userEntity = userRepository.findById(id).get();
-        if(user.getFirstName() != null){
-            userEntity.setFirstName(user.getFirstName());
+
+        userType(userDto, userEntity);
+
+        if(userDto.getPassword() != null){
+            BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder(10, new SecureRandom());
+            userEntity.setPassword(passwordEncoder.encode(userDto.getPassword()));
         }
 
-        if(user.getLastName() != null){
-            userEntity.setLastName(user.getLastName());
+        if(userDto.getFirstName() != null){
+            userEntity.setFirstName(userDto.getFirstName());
         }
 
-        if(user.getEmail() != null){
-            userEntity.setEmail(user.getEmail());
+        if(userDto.getLastName() != null){
+            userEntity.setLastName(userDto.getLastName());
         }
 
-        if(user.getPhoneNumber() != null){
-            userEntity.setPhoneNumber(user.getPhoneNumber());
+        if(userDto.getEmail() != null){
+            userEntity.setEmail(userDto.getEmail());
         }
 
-        if(user.getPassword() != null){
-            userEntity.setPassword(user.getPassword());
+        if(userDto.getPhoneNumber() != null){
+            userEntity.setPhoneNumber(userDto.getPhoneNumber());
         }
 
-        if(user.getAddress() != null){
-            userEntity.setAddress(user.getAddress());
+        if(userDto.getAddress() != null){
+            userEntity.setAddress(userDto.getAddress());
         }
 
-        if(user.getCity() != null){
-            userEntity.setCity(user.getCity());
+        if(userDto.getCity() != null){
+            userEntity.setCity(userDto.getCity());
         }
 
-        if(user.getState() != null){
-            userEntity.setState(user.getState());
+        if(userDto.getState() != null){
+            userEntity.setState(userDto.getState());
         }
 
-        if(user.getCountry() != null){
-            userEntity.setCountry(user.getCountry());
+        if(userDto.getCountry() != null){
+            userEntity.setCountry(userDto.getCountry());
         }
 
         userRepository.save(userEntity);
         return userEntity;
     }
+
 
     @Override
     public void deleteUser(UUID id) {
@@ -128,5 +130,16 @@ public class UserServiceImpl implements UserService {
         }
         userRepository.deleteById(id);
         ResponseEntity.ok(Map.of("message", "User deleted successfully"));
+    }
+    private static void userType(UserDto userDto, User userEntity) {
+        if(userDto.getRole() != null){
+            if(userDto.getRole().equals("admin"))
+                userEntity.setRole(UserType.ADMIN);
+            else if(userDto.getRole().equals("seller"))
+                userEntity.setRole(UserType.SELLER);
+            else if(userDto.getRole().equals("buyer"))
+                userEntity.setRole(UserType.BUYER);
+            else throw new UserException("Invalid user role");
+        }
     }
 }
