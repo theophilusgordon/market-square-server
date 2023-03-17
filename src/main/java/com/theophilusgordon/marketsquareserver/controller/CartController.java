@@ -1,5 +1,6 @@
 package com.theophilusgordon.marketsquareserver.controller;
 
+import com.theophilusgordon.marketsquareserver.dto.CartDto;
 import com.theophilusgordon.marketsquareserver.model.Cart;
 import com.theophilusgordon.marketsquareserver.service.CartService;
 import org.springframework.web.bind.annotation.*;
@@ -18,8 +19,8 @@ public class CartController {
     }
 
     @PostMapping("")
-    public Cart createCart(@RequestBody Cart cart){
-        return cartService.createCart(cart);
+    public Cart createCart(@RequestBody CartDto cartDto){
+        return cartService.createCart(cartDto);
     }
 
     @GetMapping("")
@@ -33,8 +34,8 @@ public class CartController {
     }
 
     @PutMapping("/{id}")
-    public Cart updateCart(@PathVariable UUID id, @RequestBody Cart cart){
-        return cartService.updateCart(cart);
+    public Cart updateCart(@PathVariable UUID id, @RequestBody CartDto cartDto){
+        return cartService.updateCart(id, cartDto);
     }
 
     @DeleteMapping("/{id}")

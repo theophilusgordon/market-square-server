@@ -1,10 +1,16 @@
 package com.theophilusgordon.marketsquareserver.service;
 
+import com.theophilusgordon.marketsquareserver.dto.CartDto;
 import com.theophilusgordon.marketsquareserver.model.Cart;
+import com.theophilusgordon.marketsquareserver.model.Product;
+import com.theophilusgordon.marketsquareserver.model.User;
 import com.theophilusgordon.marketsquareserver.repository.CartRepository;
+import com.theophilusgordon.marketsquareserver.repository.ProductRepository;
+import com.theophilusgordon.marketsquareserver.repository.UserRepository;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -12,23 +18,36 @@ import java.util.UUID;
 @Service
 public class CartServiceImpl implements CartService {
     private final CartRepository cartRepository;
+    private final UserRepository userRepository;
+    private final ProductRepository productRepository;
 
-    public CartServiceImpl(CartRepository cartRepository) {
+    public CartServiceImpl(CartRepository cartRepository,
+                           UserRepository userRepository,
+                           ProductRepository productRepository) {
         this.cartRepository = cartRepository;
+        this.userRepository = userRepository;
+        this.productRepository = productRepository;
     }
 
     @Override
-    public Cart createCart(Cart cart) {
+    public Cart createCart(CartDto cartDto) {
+        User cartUser = userRepository.findById(UUID.fromString(cartDto.getUserId()))
+                .orElseThrow(() -> new RuntimeException("User not found with id: " + cartDto.getUserId()));
+        Product cartProduct = productRepository.findById(UUID.fromString(cartDto.getProductId()))
+                .orElseThrow(() -> new RuntimeException("Product not found with id: " + cartDto.getProductId()));
         Cart cartEntity = new Cart();
-
-        BeanUtils.copyProperties(cart, cartEntity);
+        BeanUtils.copyProperties(cartDto, cartEntity);
+        cartEntity.setUser(cartUser);
+        cartEntity.setProducts(List.of(cartProduct));
+        BigDecimal totalPrice = cartProduct.getPrice().multiply(BigDecimal.valueOf(cartDto.getQuantity()));
+        cartEntity.setTotalPrice(totalPrice);
         cartRepository.save(cartEntity);
-        return cart;
+        return cartEntity;
     }
 
     @Override
     public List<Cart> getAllCarts() {
-        List<Cart> cartList = (List<Cart>) cartRepository.findAll();
+        List<Cart> cartList = cartRepository.findAll();
         return cartList.stream().map(cartEntity -> {
             Cart cart = new Cart();
             BeanUtils.copyProperties(cartEntity, cart);
@@ -46,12 +65,24 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public Cart updateCart(Cart cart) {
-        return cartRepository.findById(cart.getId()).map(cartEntity -> {
-            BeanUtils.copyProperties(cart, cartEntity);
+    public Cart updateCart(UUID id, CartDto cartDto) {
+        boolean cartExists = cartRepository.existsById(id);
+        if(!cartExists){
+            throw new RuntimeException("Cart not found with id: " + id);
+        }
+
+        if(cartDto.getQuantity() != null && cartDto.getQuantity() > 0){
+        Cart cartEntity = cartRepository.findById(id).get();
+            Product cartProduct = cartEntity.getProducts().get(0);
+            cartEntity.setQuantity(cartDto.getQuantity());
+            BigDecimal totalPrice = cartProduct.getPrice().multiply(BigDecimal.valueOf(cartDto.getQuantity()));
+            cartEntity.setTotalPrice(totalPrice);
             cartRepository.save(cartEntity);
-            return cart;
-        }).orElseThrow(() -> new RuntimeException("Cart not found with id: " + cart.getId()));
+            return cartEntity;
+        }
+        else{
+            throw new RuntimeException("Quantity must be greater than 0");
+        }
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.theophilusgordon.marketsquareserver.controller;
 
+import com.theophilusgordon.marketsquareserver.dto.OrderDto;
 import com.theophilusgordon.marketsquareserver.model.Order;
 import com.theophilusgordon.marketsquareserver.service.OrderService;
 import org.springframework.web.bind.annotation.*;
@@ -17,8 +18,8 @@ public class OrderController {
     }
 
     @PostMapping("")
-    public Order createOrder(@RequestBody Order order){
-        return orderService.createOrder(order);
+    public Order createOrder(@RequestBody OrderDto orderDto){
+        return orderService.createOrder(orderDto);
     }
 
     @GetMapping("/{id}")
