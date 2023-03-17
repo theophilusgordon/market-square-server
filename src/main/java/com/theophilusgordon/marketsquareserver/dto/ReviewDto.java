@@ -8,6 +8,7 @@ public class ReviewDto {
     @NotNull
     public String id;
     public String reviewerId;
-    public String review;
-    public String rating;
+    public String productId;
+    public String comment;
+    public Float rating;
 }

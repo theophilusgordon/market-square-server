@@ -19,5 +19,5 @@ public class Review {
     @JoinColumn(name = "reviewer_id", referencedColumnName = "id")
     private User reviewer;
     private String comment;
-    private String rating;
+    private Float rating;
 }

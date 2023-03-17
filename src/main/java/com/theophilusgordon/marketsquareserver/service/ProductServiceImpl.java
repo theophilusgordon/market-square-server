@@ -52,13 +52,13 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Product updateProduct(Product product) {
-        boolean productExists = productRepository.existsById(product.getId());
+    public Product updateProduct(UUID id, Product product) {
+        boolean productExists = productRepository.existsById(id);
         if(!productExists){
-            throw new ProductException("Product not found with id: " + product.getId());
+            throw new ProductException("Product not found with id: " + id);
         }
 
-        Product productEntity = productRepository.findById(product.getId()).get();
+        Product productEntity = productRepository.findById(id).get();
         if(product.getName() != null){
             productEntity.setName(product.getName());
         }

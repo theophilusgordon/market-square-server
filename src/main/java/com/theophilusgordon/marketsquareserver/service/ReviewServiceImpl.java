@@ -12,6 +12,7 @@ import com.theophilusgordon.marketsquareserver.repository.UserRepository;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -28,12 +29,12 @@ public class ReviewServiceImpl implements ReviewService {
     }
 
     @Override
-    public Review createReview(UUID productId, ReviewDto reviewDto) {
+    public Review createReview(ReviewDto reviewDto) {
         User reviewer = userRepository.findById(UUID.fromString(reviewDto.getReviewerId()))
-            .orElseThrow(() -> new ProductException("User not found with id: " + productId));
+            .orElseThrow(() -> new ProductException("User not found with id: " + reviewDto.getReviewerId()));
 
-        Product product = productRepository.findById(productId)
-            .orElseThrow(() -> new ProductException("User not found with id: " + productId));
+        Product product = productRepository.findById(UUID.fromString(reviewDto.getProductId()))
+            .orElseThrow(() -> new ProductException("User not found with id: " + reviewDto.getProductId()));
         Review reviewEntity = new Review();
 
         BeanUtils.copyProperties(reviewDto, reviewEntity);
@@ -49,8 +50,13 @@ public class ReviewServiceImpl implements ReviewService {
     }
 
     @Override
-    public Review getReviewByProductId(UUID id) {
-        return reviewRepository.findByProductId(id);
+    public List<Review> getReviewsByProductId(UUID id) {
+        boolean productExists = productRepository.existsById(id);
+        if(!productExists){
+            throw new ProductException("Product not found with id: " + id);
+        }
+
+        return reviewRepository.findAllByProductId(id);
     }
 
 

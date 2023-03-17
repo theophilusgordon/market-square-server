@@ -17,6 +17,7 @@ public class Product {
     private UUID id;
     @NotNull
     private String name;
+    private String condition;
     private String description;
     @NotNull
     private BigDecimal price;
@@ -26,7 +27,4 @@ public class Product {
     @ManyToOne
     @JoinColumn(name = "seller_id", referencedColumnName = "id")
     private User seller;
-
-    @OneToMany(mappedBy = "product")
-    private List<Review> reviews = new ArrayList<>();
 }
