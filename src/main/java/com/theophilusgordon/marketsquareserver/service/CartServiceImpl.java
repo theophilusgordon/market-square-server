@@ -79,8 +79,7 @@ public class CartServiceImpl implements CartService {
             cartEntity.setTotalPrice(totalPrice);
             cartRepository.save(cartEntity);
             return cartEntity;
-        }
-        else{
+        } else {
             throw new RuntimeException("Quantity must be greater than 0");
         }
     }
