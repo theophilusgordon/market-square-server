@@ -6,4 +6,4 @@ COPY . .
 
 EXPOSE 8080
 
-CMD ["mvn", "app.jar"]
+ENTRYPOINT ["java", "-jar", "/app.jar"]
