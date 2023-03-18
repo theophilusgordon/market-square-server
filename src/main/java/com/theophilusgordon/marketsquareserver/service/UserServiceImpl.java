@@ -5,7 +5,6 @@ import com.theophilusgordon.marketsquareserver.exception.UserException;
 import com.theophilusgordon.marketsquareserver.model.User;
 import com.theophilusgordon.marketsquareserver.model.enums.UserType;
 import com.theophilusgordon.marketsquareserver.repository.UserRepository;
-import com.theophilusgordon.marketsquareserver.utils.mapper.EntityObjectMapper;
 import org.springframework.beans.BeanUtils;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -52,7 +51,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<User> getAllUsers() {
-        List<User> userEntities = (List<User>) userRepository.findAll();
+        List<User> userEntities = userRepository.findAll();
         return userEntities.stream().map(userEntity -> {
             User user = new User();
             BeanUtils.copyProperties(userEntity, user);

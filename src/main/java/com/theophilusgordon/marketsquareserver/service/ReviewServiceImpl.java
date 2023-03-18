@@ -69,17 +69,9 @@ public class ReviewServiceImpl implements ReviewService {
 
         Optional<Review> reviewEntity = reviewRepository.findById(reviewId);
 
-//        if(reviewDto.getReviewerId() != null){
-//            User reviewer = userRepository.findById(UUID.fromString(reviewDto.getReviewerId()))
-//                .orElseThrow(() -> new ProductException("User not found with id: " + reviewDto.getReviewerId()));
-//            reviewEntity.setReviewer(reviewer);
-//        }
-//        if(reviewDto.getRating() != null){
-//            reviewEntity.setRating(reviewDto.getRating());
-//        }
-//        if(reviewDto.getReview() != null){
-//            reviewEntity.setComment(reviewDto.getReview());
-//        }
+//        if(reviewDto.getRating() != null) reviewEntity.setRating(reviewDto.getRating());
+//        if(reviewDto.getComment() != null) reviewEntity.setComment(reviewDto.getComment());
+
         return reviewEntity;
     }
 

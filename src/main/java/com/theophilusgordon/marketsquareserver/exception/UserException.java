@@ -5,7 +5,4 @@ public class UserException extends RuntimeException{
         super(message);
     }
 
-    public static String userNotFoundException(String id) {
-        return "User with id " + id + " not found";
-    }
 }

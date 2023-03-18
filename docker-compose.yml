@@ -1,0 +1,16 @@
+version: '3.3'
+services:
+  server:
+    container_name: market-square-server
+    image: spring-boot:3
+    restart: always
+    build: .
+    ports:
+      - "8080:8080"
+    links:
+      - market-square-db
+  db:
+    container_name: market-square-db
+    image: postgres
+    ports:
+        - '5432:6432'
