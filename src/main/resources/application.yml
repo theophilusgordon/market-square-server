@@ -1,10 +1,3 @@
-server:
-    error:
-        include-message: always
-        include-binding-errors: always
-#    port: 9000
-#    servlet:
-#        context-path: /market-square
 spring:
     datasource:
         url: jdbc:postgresql://localhost:5432/market-square-db
@@ -14,9 +7,38 @@ spring:
         hibernate:
             ddl-auto: update
         show-sql: true
+    servlet:
+        multipart:
+            enabled: true
+            file-size-threshold: 2MB
+            max-file-size: 5MB
+            max-request-size: 10MB
+
 hibernate:
     dialect: org.hibernate.dialect.PostgreSQLDialect
 
 security:
     basic:
         enabled: false
+cloud:
+    aws:
+        credentials:
+            access-key:
+            secret-key:
+        region:
+            static: eu-west-1
+        stack:
+            auto: false
+server:
+    error:
+        include-message: always
+        include-binding-errors: always
+    bucket:
+        name: market-square-storage
+#    port: 9000
+
+welcome:
+    message: You are running the market square server
+#application:
+#    bucket:
+#        name: market-square-storage

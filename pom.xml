@@ -10,7 +10,7 @@
     </parent>
     <groupId>com.theophilusgordon</groupId>
     <artifactId>market-square-server</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>1.0.0</version>
     <name>market-square-server</name>
     <description>market-square-server</description>
     <properties>
