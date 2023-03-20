@@ -130,6 +130,16 @@ public class UserServiceImpl implements UserService {
         userRepository.deleteById(id);
         ResponseEntity.ok(Map.of("message", "User deleted successfully"));
     }
+
+    @Override
+    public User getUserByEmail(String email) {
+        User userEntity = userRepository.findByEmail(email);
+        if(userEntity == null){
+            throw new UserException("User not found with email: " + email);
+        }
+        return userEntity;
+    }
+
     private static void userType(UserDto userDto, User userEntity) {
         if(userDto.getRole() != null){
             if(userDto.getRole().equals("admin"))

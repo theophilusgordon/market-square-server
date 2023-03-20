@@ -30,13 +30,6 @@ public class UserController {
     }
 
     @ResponseStatus(HttpStatus.OK)
-    @PostMapping("/login")
-    public UserDto loginUser(@RequestBody User user){
-        User loginUser = userService.loginUser(user);
-        return entityObjectMapper.convertToUserDto(loginUser);
-    }
-
-    @ResponseStatus(HttpStatus.OK)
     @GetMapping("")
     public List<UserDto> getAllUsers(){
         List<User> userEntities = userService.getAllUsers();
