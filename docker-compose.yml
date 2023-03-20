@@ -2,7 +2,6 @@ version: '3.3'
 services:
   server:
     container_name: market-square-server
-    image: spring-boot:3
     restart: always
     build: .
     ports:

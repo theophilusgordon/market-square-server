@@ -1,4 +1,4 @@
-FROM spring-boot:3
+FROM java:17
 
 WORKDIR /usr/src/app
 
@@ -8,4 +8,4 @@ RUN mvn clean install
 
 EXPOSE 8080
 
-ENTRYPOINT ["java", "-jar", "app.jar"]
+ENTRYPOINT ["java", "-jar", "market-square-server-1.0.0.jar"]

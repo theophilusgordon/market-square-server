@@ -2,7 +2,7 @@ spring:
     datasource:
         url: jdbc:postgresql://localhost:5432/market-square-db
         username: postgres
-        password: gordon@2011
+        password: ${POSTGRES_PASSWORD}
     jpa:
         hibernate:
             ddl-auto: update
@@ -23,22 +23,21 @@ security:
 cloud:
     aws:
         credentials:
-            access-key:
-            secret-key:
+            access-key: ${AWS_ACCESS_KEY_ID}
+            secret-key: ${AWS_SECRET_ACCESS_KEY}
         region:
-            static: eu-west-1
+            static: ${AWS_REGION}
         stack:
             auto: false
 server:
     error:
         include-message: always
         include-binding-errors: always
-    bucket:
-        name: market-square-storage
+
+bucket:
+    name: market-square-storage
 #    port: 9000
 
-welcome:
-    message: You are running the market square server
 #application:
 #    bucket:
 #        name: market-square-storage
