@@ -1,4 +1,14 @@
+server:
+    error:
+        include-message: always
+        include-binding-errors: always
+#    port: 9000
 spring:
+    profiles:
+        active: dev
+---
+spring:
+    profiles: dev
     datasource:
         url: jdbc:postgresql://localhost:5432/market-square-db
         username: postgres
@@ -29,15 +39,53 @@ cloud:
             static: ${AWS_REGION}
         stack:
             auto: false
-server:
-    error:
-        include-message: always
-        include-binding-errors: always
 
 bucket:
     name: market-square-storage
-#    port: 9000
 
+jwt:
+    secret: ${JWT_SECRET}
+    expiration: 86400000
+
+---
+
+spring:
+    profiles: prod
+    datasource:
+        url: jdbc:postgresql://localhost:5432/market-square-db-prod
+        username: postgres
+        password: ${POSTGRES_PASSWORD}
+    jpa:
+        hibernate:
+            ddl-auto: update
+        show-sql: true
+    servlet:
+        multipart:
+            enabled: true
+            file-size-threshold: 2MB
+            max-file-size: 5MB
+            max-request-size: 10MB
+
+hibernate:
+    dialect: org.hibernate.dialect.PostgreSQLDialect
+
+security:
+    basic:
+        enabled: false
+cloud:
+    aws:
+        credentials:
+            access-key: ${AWS_ACCESS_KEY_ID}
+            secret-key: ${AWS_SECRET_ACCESS_KEY}
+        region:
+            static: ${AWS_REGION}
+        stack:
+            auto: false
+
+bucket:
+    name: market-square-storage
+
+---
 #application:
 #    bucket:
 #        name: market-square-storage

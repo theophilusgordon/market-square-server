@@ -23,7 +23,7 @@ public class UserController {
     }
 
     @ResponseStatus(HttpStatus.CREATED)
-    @PostMapping("")
+    @PostMapping("/register")
     public UserDto createUser(@RequestBody UserDto userDto){
         User createUser = userService.createUser(userDto);
         return entityObjectMapper.convertToUserDto(createUser);

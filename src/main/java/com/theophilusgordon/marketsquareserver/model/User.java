@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
+import org.hibernate.validator.constraints.Length;
 
 import java.util.UUID;
 
@@ -16,14 +17,15 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
-    @NotNull
+    @NotNull(message = "First name is required")
     private String firstName;
-    @NotNull
+    @NotNull(message = "Last name is required")
     private String lastName;
     @Email
-    @NotNull
+    @NotNull(message = "Email is required")
     private String email;
-    @NotNull
+    @NotNull(message = "Password is required")
+    @Length(min = 8, message = "Password must be at least 8 characters")
     private String password;
     @Enumerated(EnumType.STRING)
     private UserType role;

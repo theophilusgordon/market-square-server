@@ -8,11 +8,11 @@ import lombok.Data;
 @JsonIgnoreProperties(value = {"password"}, allowSetters = true)
 public class UserDto {
     public String id;
-    @NotNull
+    @NotNull(message = "First name is required")
     public String firstName;
-    @NotNull
+    @NotNull(message = "Last name is required")
     public String lastName;
-    @NotNull
+    @NotNull(message = "Email is required")
     public String email;
     public String password;
     public String role;

@@ -8,13 +8,13 @@ import java.math.BigDecimal;
 @Data
 public class ProductDto {
     public String id;
-    @NotNull
+    @NotNull(message = "Product name is required")
     public String name;
     public String description;
-    @NotNull
+    @NotNull(message = "Price is required")
     public BigDecimal price;
     public String quantity;
-    @NotNull
+    @NotNull(message = "Category is required")
     public String category;
     public String image;
     public String sellerId;
