@@ -1,13 +1,14 @@
 package com.theophilusgordon.marketsquareserver.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.theophilusgordon.marketsquareserver.model.enums.UserType;
+import com.theophilusgordon.marketsquareserver.model.enums.UserRoles;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import org.hibernate.validator.constraints.Length;
 
+import java.util.Set;
 import java.util.UUID;
 
 @Entity(name = "users")
@@ -24,11 +25,13 @@ public class User {
     @Email
     @NotNull(message = "Email is required")
     private String email;
+
     @NotNull(message = "Password is required")
     @Length(min = 8, message = "Password must be at least 8 characters")
     private String password;
+    @ElementCollection(targetClass = UserRoles.class)
     @Enumerated(EnumType.STRING)
-    private UserType role;
+    private Set<UserRoles> roles;
     private String phoneNumber;
     private String address;
     private String city;

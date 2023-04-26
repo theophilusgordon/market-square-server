@@ -1,6 +1,6 @@
 package com.theophilusgordon.marketsquareserver.model.enums;
 
-public enum UserType {
+public enum UserRoles {
     ADMIN,
     SELLER,
     BUYER

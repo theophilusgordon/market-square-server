@@ -8,7 +8,9 @@ spring:
         active: dev
 ---
 spring:
-    profiles: dev
+    config:
+        activate:
+            on-profile: dev
     datasource:
         url: jdbc:postgresql://localhost:5432/market-square-db
         username: postgres
@@ -50,7 +52,9 @@ jwt:
 ---
 
 spring:
-    profiles: prod
+    config:
+        activate:
+            on-profile: prod
     datasource:
         url: jdbc:postgresql://localhost:5432/market-square-db-prod
         username: postgres

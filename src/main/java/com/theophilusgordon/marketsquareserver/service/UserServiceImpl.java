@@ -3,7 +3,6 @@ package com.theophilusgordon.marketsquareserver.service;
 import com.theophilusgordon.marketsquareserver.dto.UserDto;
 import com.theophilusgordon.marketsquareserver.exception.UserException;
 import com.theophilusgordon.marketsquareserver.model.User;
-import com.theophilusgordon.marketsquareserver.model.enums.UserType;
 import com.theophilusgordon.marketsquareserver.repository.UserRepository;
 import org.springframework.beans.BeanUtils;
 import org.springframework.http.ResponseEntity;
@@ -36,17 +35,17 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User loginUser(User user) {
-        User userEntity = userRepository.findByEmail(user.getEmail());
-        if(userEntity == null){
+        Optional<User> userEntity = userRepository.findByEmail(user.getEmail());
+        if(userEntity.isEmpty()){
             throw new UserException("User not found with email: " + user.getEmail());
         }
 
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder(10, new SecureRandom());
-        if(!passwordEncoder.matches(user.getPassword(), userEntity.getPassword())){
+        if(!passwordEncoder.matches(user.getPassword(), userEntity.get().getPassword())){
             throw new UserException("Password is incorrect");
         }
 
-        return userEntity;
+        return userEntity.get();
     }
 
     @Override
@@ -133,22 +132,22 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getUserByEmail(String email) {
-        User userEntity = userRepository.findByEmail(email);
-        if(userEntity == null){
+        Optional<User> userEntity = userRepository.findByEmail(email);
+        if(userEntity.isEmpty()){
             throw new UserException("User not found with email: " + email);
         }
-        return userEntity;
+        return userEntity.get();
     }
 
     private static void userType(UserDto userDto, User userEntity) {
-        if(userDto.getRole() != null){
-            if(userDto.getRole().equals("admin"))
-                userEntity.setRole(UserType.ADMIN);
-            else if(userDto.getRole().equals("seller"))
-                userEntity.setRole(UserType.SELLER);
-            else if(userDto.getRole().equals("buyer"))
-                userEntity.setRole(UserType.BUYER);
-            else throw new UserException("Invalid user role");
-        }
+//        if(userDto.getRole() != null){
+//            if(userDto.getRole().equals("admin"))
+//                userEntity.setRoles(UserType.ADMIN);
+//            else if(userDto.getRole().equals("seller"))
+//                userEntity.setRoles(UserType.SELLER);
+//            else if(userDto.getRole().equals("buyer"))
+//                userEntity.setRoles(UserType.BUYER);
+//            else throw new UserException("Invalid user role");
+//        }
     }
 }
