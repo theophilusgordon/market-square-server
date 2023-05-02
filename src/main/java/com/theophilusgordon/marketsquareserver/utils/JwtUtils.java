@@ -18,7 +18,7 @@ import java.util.function.Function;
 @Component
 public class JwtUtils {
     @Value("${jwt.secret}")
-    private String SECRET_KEY;
+    private String secretKey;
 
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
@@ -67,7 +67,7 @@ public class JwtUtils {
     }
 
     private Key getSignKey() {
-        byte[]  keyBytes = Decoders.BASE64.decode(SECRET_KEY);
+        byte[]  keyBytes = Decoders.BASE64.decode(secretKey);
         return Keys.hmacShaKeyFor(keyBytes);
     }
 }

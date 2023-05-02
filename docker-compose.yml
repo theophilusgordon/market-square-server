@@ -1,15 +1,17 @@
-version: '3.3'
+version: '3.9'
 services:
-  server:
-    container_name: market-square-server
-    restart: always
-    build: .
-    ports:
-      - "8080:8080"
-    links:
-      - market-square-db
-  db:
-    container_name: market-square-db
-    image: postgres
-    ports:
-        - '5432:6432'
+    server:
+        container_name: market-square-server
+        restart: always
+        build: .
+        ports:
+            - "8080:8080"
+        depends_on:
+            - db
+    db:
+        container_name: market-square-db
+        image: postgres
+        ports:
+            - '5432:5432'
+        environment:
+            POSTGRES_PASSWORD: mysecretpassword

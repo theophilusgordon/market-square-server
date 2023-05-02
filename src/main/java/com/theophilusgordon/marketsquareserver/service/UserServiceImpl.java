@@ -3,151 +3,90 @@ package com.theophilusgordon.marketsquareserver.service;
 import com.theophilusgordon.marketsquareserver.dto.UserDto;
 import com.theophilusgordon.marketsquareserver.exception.UserException;
 import com.theophilusgordon.marketsquareserver.model.User;
+import com.theophilusgordon.marketsquareserver.model.enums.UserRoles;
 import com.theophilusgordon.marketsquareserver.repository.UserRepository;
 import org.springframework.beans.BeanUtils;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.security.SecureRandom;
+import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
 @Service
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
+    private final BCryptPasswordEncoder passwordEncoder;
 
     public UserServiceImpl(UserRepository userRepository) {
         this.userRepository = userRepository;
+        this.passwordEncoder = new BCryptPasswordEncoder(10);
     }
+
     @Override
     public User createUser(UserDto userDto) {
         User userEntity = new User();
-        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder(10, new SecureRandom());
-        userEntity.setPassword(passwordEncoder.encode(userDto.getPassword()));
-        userType(userDto, userEntity);
+        var emailExists = userRepository.findByEmail(userDto.getEmail());
+        if (emailExists.isPresent()) {
+            return emailExists.get();
+        }
+
         BeanUtils.copyProperties(userDto, userEntity);
+        userType(userDto, userEntity);
+        userEntity.setPassword(passwordEncoder.encode(userDto.getPassword()));
         userRepository.save(userEntity);
         return userEntity;
     }
 
     @Override
     public User loginUser(User user) {
-        Optional<User> userEntity = userRepository.findByEmail(user.getEmail());
-        if(userEntity.isEmpty()){
-            throw new UserException("User not found with email: " + user.getEmail());
-        }
-
-        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder(10, new SecureRandom());
-        if(!passwordEncoder.matches(user.getPassword(), userEntity.get().getPassword())){
-            throw new UserException("Password is incorrect");
-        }
-
-        return userEntity.get();
+        return userRepository.findByEmail(user.getEmail())
+            .filter(userEntity -> passwordEncoder.matches(user.getPassword(), userEntity.getPassword()))
+            .orElseThrow(() -> new UserException("Invalid email or password"));
     }
 
     @Override
     public List<User> getAllUsers() {
-        List<User> userEntities = userRepository.findAll();
-        return userEntities.stream().map(userEntity -> {
-            User user = new User();
-            BeanUtils.copyProperties(userEntity, user);
-            return user;
-        }).toList();
+        return userRepository.findAll();
     }
 
     @Override
     public Optional<User> getUserById(UUID id) {
-        return Optional.ofNullable(userRepository.findById(id).map(userEntity -> {
-            User user = new User();
-            BeanUtils.copyProperties(userEntity, user);
-            return user;
-        }).orElseThrow(() -> new UserException("User not found with id: " + id)));
+        return userRepository.findById(id);
     }
 
     @Override
     public User updateUser(UUID id, UserDto userDto) {
-        boolean userExists = userRepository.existsById(id);
-        if(!userExists){
-            throw new UserException("User not found with id: " + id);
-        }
-
-        User userEntity = userRepository.findById(id).get();
-
+        User userEntity = userRepository.findById(id).orElseThrow(() -> new UserException("User not found with id: " + id));
         userType(userDto, userEntity);
-
-        if(userDto.getPassword() != null){
-            BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder(10, new SecureRandom());
+        BeanUtils.copyProperties(userDto, userEntity, "password");
+        if (userDto.getPassword() != null) {
             userEntity.setPassword(passwordEncoder.encode(userDto.getPassword()));
         }
-
-        if(userDto.getFirstName() != null){
-            userEntity.setFirstName(userDto.getFirstName());
-        }
-
-        if(userDto.getLastName() != null){
-            userEntity.setLastName(userDto.getLastName());
-        }
-
-        if(userDto.getEmail() != null){
-            userEntity.setEmail(userDto.getEmail());
-        }
-
-        if(userDto.getPhoneNumber() != null){
-            userEntity.setPhoneNumber(userDto.getPhoneNumber());
-        }
-
-        if(userDto.getAddress() != null){
-            userEntity.setAddress(userDto.getAddress());
-        }
-
-        if(userDto.getCity() != null){
-            userEntity.setCity(userDto.getCity());
-        }
-
-        if(userDto.getState() != null){
-            userEntity.setState(userDto.getState());
-        }
-
-        if(userDto.getCountry() != null){
-            userEntity.setCountry(userDto.getCountry());
-        }
-
         userRepository.save(userEntity);
         return userEntity;
     }
 
-
     @Override
     public void deleteUser(UUID id) {
-        boolean userExists = userRepository.existsById(id);
-        if(!userExists){
-            throw new UserException("User not found with id: " + id);
-        }
+        userRepository.findById(id).orElseThrow(() -> new UserException("User not found with id: " + id));
         userRepository.deleteById(id);
-        ResponseEntity.ok(Map.of("message", "User deleted successfully"));
     }
 
     @Override
     public User getUserByEmail(String email) {
-        Optional<User> userEntity = userRepository.findByEmail(email);
-        if(userEntity.isEmpty()){
-            throw new UserException("User not found with email: " + email);
-        }
-        return userEntity.get();
+        return userRepository.findByEmail(email).orElseThrow(() -> new UserException("User not found with email: " + email));
     }
 
     private static void userType(UserDto userDto, User userEntity) {
-//        if(userDto.getRole() != null){
-//            if(userDto.getRole().equals("admin"))
-//                userEntity.setRoles(UserType.ADMIN);
-//            else if(userDto.getRole().equals("seller"))
-//                userEntity.setRoles(UserType.SELLER);
-//            else if(userDto.getRole().equals("buyer"))
-//                userEntity.setRoles(UserType.BUYER);
-//            else throw new UserException("Invalid user role");
-//        }
+        if(userDto.getRole() != null){
+            switch (userDto.getRole()) {
+                case "admin" -> userEntity.setRoles(Collections.singleton(UserRoles.ADMIN));
+                case "seller" -> userEntity.setRoles(Collections.singleton(UserRoles.SELLER));
+                case "buyer" -> userEntity.setRoles(Collections.singleton(UserRoles.BUYER));
+                default -> throw new UserException("Invalid user role");
+            }
+        }
     }
 }

@@ -4,63 +4,54 @@ import com.theophilusgordon.marketsquareserver.dto.UserDto;
 import com.theophilusgordon.marketsquareserver.model.User;
 import com.theophilusgordon.marketsquareserver.service.UserService;
 import com.theophilusgordon.marketsquareserver.utils.mapper.EntityObjectMapper;
+import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/v1/users")
+@AllArgsConstructor
 public class UserController {
+
     private final UserService userService;
     private final EntityObjectMapper entityObjectMapper;
 
-    public UserController(UserService userService, EntityObjectMapper entityObjectMapper) {
-        this.userService = userService;
-        this.entityObjectMapper = entityObjectMapper;
-    }
-
-    @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/register")
-    public UserDto createUser(@RequestBody UserDto userDto){
+    public ResponseEntity<UserDto> createUser(@RequestBody UserDto userDto) {
         User createUser = userService.createUser(userDto);
-        return entityObjectMapper.convertToUserDto(createUser);
+        UserDto createdUserDto = entityObjectMapper.convertToUserDto(createUser);
+        return new ResponseEntity<>(createdUserDto, HttpStatus.CREATED);
     }
 
-    @ResponseStatus(HttpStatus.OK)
-    @GetMapping("")
-    public List<UserDto> getAllUsers(){
+    @GetMapping
+    public ResponseEntity<List<UserDto>> getAllUsers() {
         List<User> userEntities = userService.getAllUsers();
-        return entityObjectMapper.convertToUserDtoList(userEntities);
+        List<UserDto> userDtoList = entityObjectMapper.convertToUserDtoList(userEntities);
+        return new ResponseEntity<>(userDtoList, HttpStatus.OK);
     }
 
-    @ResponseStatus(HttpStatus.OK)
     @GetMapping("/{id}")
-    public Optional<UserDto> getUserById(@PathVariable UUID id){
-        if(id == null)
-            throw new RuntimeException("User id is required"
-                    + " to get user details");
-
-        Optional<User> user = userService.getUserById(id);
-
-        if(!user.isPresent())
-            throw new RuntimeException("User not found with id: " + id);
-
-        return entityObjectMapper.convertToUserDtoOptional(user.get());
+    public ResponseEntity<UserDto> getUserById(@PathVariable UUID id) {
+        User user = userService.getUserById(id)
+            .orElseThrow(() -> new RuntimeException("User not found with id: " + id));
+        UserDto userDto = entityObjectMapper.convertToUserDto(user);
+        return new ResponseEntity<>(userDto, HttpStatus.OK);
     }
 
-    @ResponseStatus(HttpStatus.OK)
     @PutMapping("/{id}")
-    public UserDto updateUser(@PathVariable UUID id, @RequestBody UserDto userDto){
+    public ResponseEntity<UserDto> updateUser(@PathVariable UUID id, @RequestBody UserDto userDto) {
         User updatedUser = userService.updateUser(id, userDto);
-        return entityObjectMapper.convertToUserDto(updatedUser);
+        UserDto updatedUserDto = entityObjectMapper.convertToUserDto(updatedUser);
+        return new ResponseEntity<>(updatedUserDto, HttpStatus.OK);
     }
 
-    @ResponseStatus(HttpStatus.OK)
     @DeleteMapping("/{id}")
-    public void deleteUser(@PathVariable UUID id){
+    public ResponseEntity<Void> deleteUser(@PathVariable UUID id) {
         userService.deleteUser(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }
