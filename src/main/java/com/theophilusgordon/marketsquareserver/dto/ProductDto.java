@@ -1,6 +1,6 @@
 package com.theophilusgordon.marketsquareserver.dto;
 
-import com.theophilusgordon.marketsquareserver.model.User;
+import com.theophilusgordon.marketsquareserver.entity.User;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import java.math.BigDecimal;

@@ -2,8 +2,8 @@ package com.theophilusgordon.marketsquareserver.service;
 
 import com.theophilusgordon.marketsquareserver.dto.OrderDto;
 import com.theophilusgordon.marketsquareserver.exception.OrderException;
-import com.theophilusgordon.marketsquareserver.model.Order;
-import com.theophilusgordon.marketsquareserver.model.User;
+import com.theophilusgordon.marketsquareserver.entity.Order;
+import com.theophilusgordon.marketsquareserver.entity.User;
 import com.theophilusgordon.marketsquareserver.repository.OrderRepository;
 import com.theophilusgordon.marketsquareserver.repository.UserRepository;
 import org.springframework.beans.BeanUtils;

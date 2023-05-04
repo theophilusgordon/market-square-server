@@ -1,7 +1,7 @@
 package com.theophilusgordon.marketsquareserver.controller;
 
 import com.theophilusgordon.marketsquareserver.dto.OrderDto;
-import com.theophilusgordon.marketsquareserver.model.Order;
+import com.theophilusgordon.marketsquareserver.entity.Order;
 import com.theophilusgordon.marketsquareserver.service.OrderService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

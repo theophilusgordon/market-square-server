@@ -1,6 +1,6 @@
 package com.theophilusgordon.marketsquareserver.service;
 
-import com.theophilusgordon.marketsquareserver.model.Payment;
+import com.theophilusgordon.marketsquareserver.entity.Payment;
 
 import java.util.Optional;
 import java.util.UUID;

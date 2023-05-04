@@ -1,7 +1,7 @@
 package com.theophilusgordon.marketsquareserver.controller;
 
 import com.theophilusgordon.marketsquareserver.dto.CartDto;
-import com.theophilusgordon.marketsquareserver.model.Cart;
+import com.theophilusgordon.marketsquareserver.entity.Cart;
 import com.theophilusgordon.marketsquareserver.service.CartService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

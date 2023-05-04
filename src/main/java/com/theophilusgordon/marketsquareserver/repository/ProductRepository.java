@@ -1,6 +1,6 @@
 package com.theophilusgordon.marketsquareserver.repository;
 
-import com.theophilusgordon.marketsquareserver.model.Product;
+import com.theophilusgordon.marketsquareserver.entity.Product;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 

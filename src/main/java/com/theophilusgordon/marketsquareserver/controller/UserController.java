@@ -1,7 +1,7 @@
 package com.theophilusgordon.marketsquareserver.controller;
 
 import com.theophilusgordon.marketsquareserver.dto.UserDto;
-import com.theophilusgordon.marketsquareserver.model.User;
+import com.theophilusgordon.marketsquareserver.entity.User;
 import com.theophilusgordon.marketsquareserver.service.UserService;
 import com.theophilusgordon.marketsquareserver.utils.mapper.EntityObjectMapper;
 import lombok.AllArgsConstructor;

@@ -1,9 +1,9 @@
 package com.theophilusgordon.marketsquareserver.service;
 
 import com.theophilusgordon.marketsquareserver.dto.CartDto;
-import com.theophilusgordon.marketsquareserver.model.Cart;
-import com.theophilusgordon.marketsquareserver.model.Product;
-import com.theophilusgordon.marketsquareserver.model.User;
+import com.theophilusgordon.marketsquareserver.entity.Cart;
+import com.theophilusgordon.marketsquareserver.entity.Product;
+import com.theophilusgordon.marketsquareserver.entity.User;
 import com.theophilusgordon.marketsquareserver.repository.CartRepository;
 import com.theophilusgordon.marketsquareserver.repository.ProductRepository;
 import com.theophilusgordon.marketsquareserver.repository.UserRepository;

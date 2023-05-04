@@ -1,7 +1,7 @@
 package com.theophilusgordon.marketsquareserver.service;
 
 import com.theophilusgordon.marketsquareserver.dto.OrderDto;
-import com.theophilusgordon.marketsquareserver.model.Order;
+import com.theophilusgordon.marketsquareserver.entity.Order;
 
 import java.util.List;
 import java.util.Optional;

@@ -1,7 +1,7 @@
 package com.theophilusgordon.marketsquareserver.utils.mapper;
 
 import com.theophilusgordon.marketsquareserver.dto.*;
-import com.theophilusgordon.marketsquareserver.model.*;
+import com.theophilusgordon.marketsquareserver.entity.*;
 
 import java.util.List;
 import java.util.Optional;

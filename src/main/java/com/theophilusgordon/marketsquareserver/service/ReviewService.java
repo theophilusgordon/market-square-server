@@ -1,7 +1,7 @@
 package com.theophilusgordon.marketsquareserver.service;
 
 import com.theophilusgordon.marketsquareserver.dto.ReviewDto;
-import com.theophilusgordon.marketsquareserver.model.Review;
+import com.theophilusgordon.marketsquareserver.entity.Review;
 
 import java.util.List;
 import java.util.Optional;

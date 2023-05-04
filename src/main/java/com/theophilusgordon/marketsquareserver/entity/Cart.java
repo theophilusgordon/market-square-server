@@ -1,4 +1,4 @@
-package com.theophilusgordon.marketsquareserver.model;
+package com.theophilusgordon.marketsquareserver.entity;
 
 import jakarta.persistence.*;
 import lombok.*;

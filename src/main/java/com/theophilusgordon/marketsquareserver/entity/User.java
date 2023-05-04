@@ -1,7 +1,7 @@
-package com.theophilusgordon.marketsquareserver.model;
+package com.theophilusgordon.marketsquareserver.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.theophilusgordon.marketsquareserver.model.enums.UserRoles;
+import com.theophilusgordon.marketsquareserver.entity.enums.UserRoles;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;

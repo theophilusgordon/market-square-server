@@ -2,8 +2,8 @@ package com.theophilusgordon.marketsquareserver.service;
 
 import com.theophilusgordon.marketsquareserver.dto.UserDto;
 import com.theophilusgordon.marketsquareserver.exception.UserException;
-import com.theophilusgordon.marketsquareserver.model.User;
-import com.theophilusgordon.marketsquareserver.model.enums.UserRoles;
+import com.theophilusgordon.marketsquareserver.entity.User;
+import com.theophilusgordon.marketsquareserver.entity.enums.UserRoles;
 import com.theophilusgordon.marketsquareserver.repository.UserRepository;
 import org.springframework.beans.BeanUtils;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;

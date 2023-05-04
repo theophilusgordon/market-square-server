@@ -1,6 +1,6 @@
 package com.theophilusgordon.marketsquareserver.converter;
 
-import com.theophilusgordon.marketsquareserver.model.User;
+import com.theophilusgordon.marketsquareserver.entity.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -9,12 +9,12 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class UserUserDetails implements UserDetails {
+public class UserInfoUserDetails implements UserDetails {
     private final String username;
     private final String password;
     private final List<GrantedAuthority> authorities;
 
-    public UserUserDetails(User user){
+    public UserInfoUserDetails(User user){
         username = user.getEmail();
         password = user.getPassword();
         authorities = user.getRoles().stream()

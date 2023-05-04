@@ -1,6 +1,6 @@
 package com.theophilusgordon.marketsquareserver.repository;
 
-import com.theophilusgordon.marketsquareserver.model.Payment;
+import com.theophilusgordon.marketsquareserver.entity.Payment;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
