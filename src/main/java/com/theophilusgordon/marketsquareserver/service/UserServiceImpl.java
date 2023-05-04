@@ -26,12 +26,12 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User createUser(UserDto userDto) {
-        User userEntity = new User();
-        var emailExists = userRepository.findByEmail(userDto.getEmail());
-        if (emailExists.isPresent()) {
-            return emailExists.get();
-        }
+        userRepository.findByEmail(userDto.getEmail())
+            .ifPresent(existingUser -> {
+                throw new UserException("Email already in use: " + userDto.getEmail());
+            });
 
+        User userEntity = new User();
         BeanUtils.copyProperties(userDto, userEntity);
         userType(userDto, userEntity);
         userEntity.setPassword(passwordEncoder.encode(userDto.getPassword()));
@@ -70,8 +70,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void deleteUser(UUID id) {
-        userRepository.findById(id).orElseThrow(() -> new UserException("User not found with id: " + id));
-        userRepository.deleteById(id);
+        User userEntity = userRepository.findById(id).orElseThrow(() -> new UserException("User not found with id: " + id));
+        userRepository.delete(userEntity);
     }
 
     @Override
@@ -80,7 +80,7 @@ public class UserServiceImpl implements UserService {
     }
 
     private static void userType(UserDto userDto, User userEntity) {
-        if(userDto.getRole() != null){
+        if (userDto.getRole() != null) {
             switch (userDto.getRole()) {
                 case "admin" -> userEntity.setRoles(Collections.singleton(UserRoles.ADMIN));
                 case "seller" -> userEntity.setRoles(Collections.singleton(UserRoles.SELLER));

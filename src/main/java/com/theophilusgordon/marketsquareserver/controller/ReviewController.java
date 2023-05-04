@@ -3,6 +3,8 @@ package com.theophilusgordon.marketsquareserver.controller;
 import com.theophilusgordon.marketsquareserver.dto.ReviewDto;
 import com.theophilusgordon.marketsquareserver.model.Review;
 import com.theophilusgordon.marketsquareserver.service.ReviewService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,28 +20,34 @@ public class ReviewController {
         this.reviewService = reviewService;
     }
 
-    @PostMapping("")
-    public Review createReview(@RequestBody ReviewDto reviewDto){
-        return reviewService.createReview(reviewDto);
+    @PostMapping
+    public ResponseEntity<Review> createReview(@RequestBody ReviewDto reviewDto){
+        Review createdReview = reviewService.createReview(reviewDto);
+        return new ResponseEntity<>(createdReview, HttpStatus.CREATED);
     }
 
     @GetMapping("/{id}")
-    public Optional<Review> getReviewById(@PathVariable UUID id){
-        return reviewService.getReviewById(id);
+    public ResponseEntity<Review> getReviewById(@PathVariable UUID id){
+        Optional<Review> review = reviewService.getReviewById(id);
+        return review.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @GetMapping("product/{id}")
-    public List<Review> getReviewByProductId(@PathVariable UUID id){
-        return reviewService.getReviewsByProductId(id);
+    public ResponseEntity<List<Review>> getReviewByProductId(@PathVariable UUID id){
+        List<Review> reviews = reviewService.getReviewsByProductId(id);
+        return ResponseEntity.ok(reviews);
     }
 
     @PutMapping("/{id}")
-    public Optional<Review> updateReview(@PathVariable UUID id, @RequestBody ReviewDto review){
-        return reviewService.updateReview(id, review);
+    public ResponseEntity<Review> updateReview(@PathVariable UUID id, @RequestBody ReviewDto reviewDto){
+        Optional<Review> updatedReview = reviewService.updateReview(id, reviewDto);
+        return updatedReview.map(ResponseEntity::ok)
+            .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @DeleteMapping("/{id}")
-    public void deleteReview(@PathVariable UUID id){
+    public ResponseEntity<Void> deleteReview(@PathVariable UUID id){
         reviewService.deleteReview(id);
+        return ResponseEntity.noContent().build();
     }
 }

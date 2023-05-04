@@ -34,7 +34,7 @@ public class ReviewServiceImpl implements ReviewService {
             .orElseThrow(() -> new ProductException("User not found with id: " + reviewDto.getReviewerId()));
 
         Product product = productRepository.findById(UUID.fromString(reviewDto.getProductId()))
-            .orElseThrow(() -> new ProductException("User not found with id: " + reviewDto.getProductId()));
+            .orElseThrow(() -> new ProductException("Product not found with id: " + reviewDto.getProductId()));
         Review reviewEntity = new Review();
 
         BeanUtils.copyProperties(reviewDto, reviewEntity);
@@ -69,8 +69,11 @@ public class ReviewServiceImpl implements ReviewService {
 
         Optional<Review> reviewEntity = reviewRepository.findById(reviewId);
 
-//        if(reviewDto.getRating() != null) reviewEntity.setRating(reviewDto.getRating());
-//        if(reviewDto.getComment() != null) reviewEntity.setComment(reviewDto.getComment());
+        reviewEntity.ifPresent(review -> {
+            if(reviewDto.getRating() != null) review.setRating(reviewDto.getRating());
+            if(reviewDto.getComment() != null) review.setComment(reviewDto.getComment());
+            reviewRepository.save(review);
+        });
 
         return reviewEntity;
     }

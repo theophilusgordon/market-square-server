@@ -3,6 +3,8 @@ package com.theophilusgordon.marketsquareserver.controller;
 import com.theophilusgordon.marketsquareserver.dto.CartDto;
 import com.theophilusgordon.marketsquareserver.model.Cart;
 import com.theophilusgordon.marketsquareserver.service.CartService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,28 +20,33 @@ public class CartController {
         this.cartService = cartService;
     }
 
-    @PostMapping("")
-    public Cart createCart(@RequestBody CartDto cartDto){
-        return cartService.createCart(cartDto);
+    @PostMapping
+    public ResponseEntity<Cart> createCart(@RequestBody CartDto cartDto){
+        Cart createdCart = cartService.createCart(cartDto);
+        return new ResponseEntity<>(createdCart, HttpStatus.CREATED);
     }
 
-    @GetMapping("")
-    public List<Cart> getAllCarts(){
-        return cartService.getAllCarts();
+    @GetMapping
+    public ResponseEntity<List<Cart>> getAllCarts(){
+        List<Cart> carts = cartService.getAllCarts();
+        return ResponseEntity.ok(carts);
     }
 
     @GetMapping("/{id}")
-    public Optional<Cart> getCartById(@PathVariable UUID id){
-        return cartService.getCartById(id);
+    public ResponseEntity<Cart> getCartById(@PathVariable UUID id){
+        Optional<Cart> cart = cartService.getCartById(id);
+        return cart.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @PutMapping("/{id}")
-    public Cart updateCart(@PathVariable UUID id, @RequestBody CartDto cartDto){
-        return cartService.updateCart(id, cartDto);
+    public ResponseEntity<Cart> updateCart(@PathVariable UUID id, @RequestBody CartDto cartDto){
+        Cart updatedCart = cartService.updateCart(id, cartDto);
+        return ResponseEntity.ok(updatedCart);
     }
 
     @DeleteMapping("/{id}")
-    public void deleteCart(@PathVariable UUID id){
+    public ResponseEntity<Void> deleteCart(@PathVariable UUID id){
         cartService.deleteCart(id);
+        return ResponseEntity.noContent().build();
     }
 }

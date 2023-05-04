@@ -7,11 +7,9 @@ import com.theophilusgordon.marketsquareserver.model.User;
 import com.theophilusgordon.marketsquareserver.repository.ProductRepository;
 import com.theophilusgordon.marketsquareserver.repository.UserRepository;
 import org.springframework.beans.BeanUtils;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -25,10 +23,11 @@ public class ProductServiceImpl implements ProductService {
         this.productRepository = productRepository;
         this.userRepository = userRepository;
     }
+
     @Override
     public Product createProduct(ProductDto productDto) {
         User seller = userRepository.findById(UUID.fromString(productDto.getSellerId()))
-            .orElseThrow(() -> new ProductException("User not found with id: " + productDto.getSeller().getId()));
+            .orElseThrow(() -> new ProductException("User not found with id: " + productDto.getSellerId()));
         Product productEntity = new Product();
         BeanUtils.copyProperties(productDto, productEntity);
         productEntity.setSeller(seller);
@@ -38,12 +37,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public List<Product> getAllProducts() {
-        List<Product> productEntities = productRepository.findAll();
-        return productEntities.stream().map(productEntity -> {
-            Product product = new Product();
-            BeanUtils.copyProperties(productEntity, product);
-            return product;
-        }).toList();
+        return productRepository.findAll();
     }
 
     @Override
@@ -53,27 +47,22 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Product updateProduct(UUID id, Product product) {
-        boolean productExists = productRepository.existsById(id);
-        if(!productExists){
-            throw new ProductException("Product not found with id: " + id);
-        }
+        Product productEntity = productRepository.findById(id)
+            .orElseThrow(() -> new ProductException("Product not found with id: " + id));
 
-        Product productEntity = productRepository.findById(id).get();
-        if(product.getName() != null){
+        if (product.getName() != null) {
             productEntity.setName(product.getName());
         }
-        if(product.getDescription() != null){
+        if (product.getDescription() != null) {
             productEntity.setDescription(product.getDescription());
         }
-        if(product.getPrice() != null){
+        if (product.getPrice() != null) {
             productEntity.setPrice(product.getPrice());
         }
-
-        if(product.getImage() != null){
+        if (product.getImage() != null) {
             productEntity.setImage(product.getImage());
         }
-
-        if(product.getCategory() != null){
+        if (product.getCategory() != null) {
             productEntity.setCategory(product.getCategory());
         }
 
@@ -82,11 +71,8 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public void deleteProduct(UUID id) {
-        boolean productExists = productRepository.existsById(id);
-        if(!productExists){
-            throw new ProductException("Product not found with id: " + id);
-        }
-        productRepository.deleteById(id);
-        ResponseEntity.ok(Map.of("message", "User deleted successfully"));
+        Product productEntity = productRepository.findById(id)
+            .orElseThrow(() -> new ProductException("Product not found with id: " + id));
+        productRepository.delete(productEntity);
     }
 }

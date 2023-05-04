@@ -3,7 +3,7 @@ package com.theophilusgordon.marketsquareserver.controller;
 import com.theophilusgordon.marketsquareserver.dto.AuthRequestDto;
 import com.theophilusgordon.marketsquareserver.service.AuthService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -13,9 +13,9 @@ import org.springframework.web.bind.annotation.*;
 public class AuthController {
     private final AuthService authService;
 
-    @ResponseStatus(HttpStatus.OK)
-     @PostMapping("/login")
-     public String login(@RequestBody AuthRequestDto authRequestDto){
-         return authService.authenticate(authRequestDto);
-     }
+    @PostMapping("/login")
+    public ResponseEntity<String> login(@RequestBody AuthRequestDto authRequestDto){
+        String token = authService.authenticate(authRequestDto);
+        return ResponseEntity.ok(token);
+    }
 }

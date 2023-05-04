@@ -25,11 +25,10 @@ public class User {
     @Email
     @NotNull(message = "Email is required")
     private String email;
-
     @NotNull(message = "Password is required")
     @Length(min = 8, message = "Password must be at least 8 characters")
     private String password;
-    @ElementCollection(targetClass = UserRoles.class)
+    @ElementCollection(targetClass = UserRoles.class, fetch = FetchType.EAGER)
     @Enumerated(EnumType.STRING)
     private Set<UserRoles> roles;
     private String phoneNumber;

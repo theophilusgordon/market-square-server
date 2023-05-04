@@ -3,6 +3,8 @@ package com.theophilusgordon.marketsquareserver.controller;
 import com.theophilusgordon.marketsquareserver.dto.OrderDto;
 import com.theophilusgordon.marketsquareserver.model.Order;
 import com.theophilusgordon.marketsquareserver.service.OrderService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
@@ -17,24 +19,28 @@ public class OrderController {
         this.orderService = orderService;
     }
 
-    @PostMapping("")
-    public Order createOrder(@RequestBody OrderDto orderDto){
-        return orderService.createOrder(orderDto);
+    @PostMapping
+    public ResponseEntity<Order> createOrder(@RequestBody OrderDto orderDto){
+        Order createdOrder = orderService.createOrder(orderDto);
+        return new ResponseEntity<>(createdOrder, HttpStatus.CREATED);
     }
 
     @GetMapping("/{id}")
-    public Optional<Order> getOrderById(@PathVariable UUID id){
-        return orderService.getOrderById(id);
+    public ResponseEntity<Order> getOrderById(@PathVariable UUID id){
+        Optional<Order> order = orderService.getOrderById(id);
+        return order.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @PutMapping("/{id}")
-    public Order updateOrder(@PathVariable UUID id, @RequestBody Order order){
+    public ResponseEntity<Order> updateOrder(@PathVariable UUID id, @RequestBody Order order){
         order.setId(id);
-        return orderService.updateOrder(order);
+        Order updatedOrder = orderService.updateOrder(order);
+        return ResponseEntity.ok(updatedOrder);
     }
 
     @DeleteMapping("/{id}")
-    public void deleteOrder(@PathVariable UUID id){
+    public ResponseEntity<Void> deleteOrder(@PathVariable UUID id){
         orderService.deleteOrder(id);
+        return ResponseEntity.noContent().build();
     }
 }

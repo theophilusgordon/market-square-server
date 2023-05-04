@@ -53,9 +53,9 @@ public class EntityObjectMapperImpl implements EntityObjectMapper{
 
     @Override
     public List<ProductDto> convertToProductDtoList(List<Product> productEntities) {
-        ProductDto productDto = new ProductDto();
         List<ProductDto> productDtoList = new ArrayList<>();
         for(Product productEntity : productEntities){
+            ProductDto productDto = new ProductDto();
             BeanUtils.copyProperties(productEntity, productDto);
             productDtoList.add(productDto);
         }
@@ -64,42 +64,58 @@ public class EntityObjectMapperImpl implements EntityObjectMapper{
 
     @Override
     public OrderDto convertToOrderDto(Order order) {
-        return null;
+        OrderDto orderDto = new OrderDto();
+        BeanUtils.copyProperties(order, orderDto);
+        return orderDto;
     }
 
     @Override
     public Order convertToOrderEntity(OrderDto orderDto) {
-        return null;
+        Order order = new Order();
+        BeanUtils.copyProperties(orderDto, order);
+        return order;
     }
 
     @Override
     public ReviewDto convertToReviewDto(Review review) {
-        return null;
+        ReviewDto reviewDto = new ReviewDto();
+        BeanUtils.copyProperties(review, reviewDto);
+        return reviewDto;
     }
 
     @Override
     public Review convertToReviewEntity(ReviewDto reviewDto) {
-        return null;
+        Review review = new Review();
+        BeanUtils.copyProperties(reviewDto, review);
+        return review;
     }
 
     @Override
     public CartDto convertToCartDto(Cart cart) {
-        return null;
+        CartDto cartDto = new CartDto();
+        BeanUtils.copyProperties(cart, cartDto);
+        return cartDto;
     }
 
     @Override
     public Cart convertToCartEntity(CartDto cartDto) {
-        return null;
+        Cart cart = new Cart();
+        BeanUtils.copyProperties(cartDto, cart);
+        return cart;
     }
 
     @Override
     public PaymentDto convertToPaymentDto(Payment payment) {
-        return null;
+        PaymentDto paymentDto = new PaymentDto();
+        BeanUtils.copyProperties(payment, paymentDto);
+        return paymentDto;
     }
 
     @Override
     public Payment convertToPaymentEntity(PaymentDto paymentDto) {
-        return null;
+        Payment payment = new Payment();
+        BeanUtils.copyProperties(paymentDto, payment);
+        return payment;
     }
 
     @Override
@@ -109,8 +125,6 @@ public class EntityObjectMapperImpl implements EntityObjectMapper{
             UserDto user = setUserDto(userEntity);
             userDtoList.add(user);
         }
-
-
         return userDtoList;
     }
 

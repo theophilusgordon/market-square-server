@@ -23,6 +23,6 @@ public class AuthServiceImpl implements AuthService {
             return jwtUtils.generateToken(authRequestDto.getUsername());
         }
 
-        throw new UsernameNotFoundException("invalid user");
+        throw new UsernameNotFoundException("Invalid user");
     }
 }
