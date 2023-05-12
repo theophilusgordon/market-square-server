@@ -43,7 +43,7 @@ cloud:
             auto: false
 
 bucket:
-    name: market-square-storage
+    name: market-sqaure-storage
 
 jwt:
     secret: ${JWT_SECRET}

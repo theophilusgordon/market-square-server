@@ -39,7 +39,7 @@ public class SecurityConfig {
         http.csrf().disable()
             .cors().and()
             .authorizeHttpRequests()
-            .requestMatchers("/api/v1/auth/**", "/api/v1/users/**", "/swagger-ui/**", "/v3/api-docs/**").permitAll()
+            .requestMatchers("/api/v1/auth/**", "/api/v1/users/**", "/swagger-ui/**", "/v3/api-docs/**", "/api/v1/files/upload").permitAll()
             .anyRequest().authenticated().and()
             .sessionManagement()
             .sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
