@@ -3,6 +3,7 @@ package com.theophilusgordon.marketsquareserver.controller;
 import com.theophilusgordon.marketsquareserver.dto.CartDto;
 import com.theophilusgordon.marketsquareserver.entity.Cart;
 import com.theophilusgordon.marketsquareserver.service.CartService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,7 +22,7 @@ public class CartController {
     }
 
     @PostMapping
-    public ResponseEntity<Cart> createCart(@RequestBody CartDto cartDto){
+    public ResponseEntity<Cart> createCart(@Valid @RequestBody CartDto cartDto){
         Cart createdCart = cartService.createCart(cartDto);
         return new ResponseEntity<>(createdCart, HttpStatus.CREATED);
     }
@@ -39,7 +40,7 @@ public class CartController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Cart> updateCart(@PathVariable UUID id, @RequestBody CartDto cartDto){
+    public ResponseEntity<Cart> updateCart(@Valid @PathVariable UUID id, @RequestBody CartDto cartDto){
         Cart updatedCart = cartService.updateCart(id, cartDto);
         return ResponseEntity.ok(updatedCart);
     }

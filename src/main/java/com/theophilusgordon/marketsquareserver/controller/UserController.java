@@ -4,6 +4,7 @@ import com.theophilusgordon.marketsquareserver.dto.UserDto;
 import com.theophilusgordon.marketsquareserver.entity.User;
 import com.theophilusgordon.marketsquareserver.service.UserService;
 import com.theophilusgordon.marketsquareserver.utils.mapper.EntityObjectMapper;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,7 +22,7 @@ public class UserController {
     private final EntityObjectMapper entityObjectMapper;
 
     @PostMapping("/register")
-    public ResponseEntity<UserDto> createUser(@RequestBody UserDto userDto) {
+    public ResponseEntity<UserDto> createUser(@Valid @RequestBody UserDto userDto) {
         User createUser = userService.createUser(userDto);
         UserDto createdUserDto = entityObjectMapper.convertToUserDto(createUser);
         return new ResponseEntity<>(createdUserDto, HttpStatus.CREATED);
@@ -43,7 +44,7 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<UserDto> updateUser(@PathVariable UUID id, @RequestBody UserDto userDto) {
+    public ResponseEntity<UserDto> updateUser(@PathVariable UUID id, @Valid @RequestBody UserDto userDto) {
         User updatedUser = userService.updateUser(id, userDto);
         UserDto updatedUserDto = entityObjectMapper.convertToUserDto(updatedUser);
         return new ResponseEntity<>(updatedUserDto, HttpStatus.OK);

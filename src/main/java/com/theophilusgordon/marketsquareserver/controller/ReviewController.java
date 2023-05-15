@@ -3,6 +3,7 @@ package com.theophilusgordon.marketsquareserver.controller;
 import com.theophilusgordon.marketsquareserver.dto.ReviewDto;
 import com.theophilusgordon.marketsquareserver.entity.Review;
 import com.theophilusgordon.marketsquareserver.service.ReviewService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -23,7 +24,7 @@ public class ReviewController {
 
     @PostMapping
     @PreAuthorize("hasRole('ROLE_BUYER')")
-    public ResponseEntity<Review> createReview(@RequestBody ReviewDto reviewDto){
+    public ResponseEntity<Review> createReview(@Valid @RequestBody ReviewDto reviewDto){
         Review createdReview = reviewService.createReview(reviewDto);
         return new ResponseEntity<>(createdReview, HttpStatus.CREATED);
     }
@@ -42,7 +43,7 @@ public class ReviewController {
 
     @PutMapping("/{id}")
     @PreAuthorize("hasRole('ROLE_BUYER')")
-    public ResponseEntity<Review> updateReview(@PathVariable UUID id, @RequestBody ReviewDto reviewDto){
+    public ResponseEntity<Review> updateReview(@PathVariable UUID id, @Valid @RequestBody ReviewDto reviewDto){
         Optional<Review> updatedReview = reviewService.updateReview(id, reviewDto);
         return updatedReview.map(ResponseEntity::ok)
             .orElseGet(() -> ResponseEntity.notFound().build());

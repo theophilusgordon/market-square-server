@@ -3,6 +3,7 @@ package com.theophilusgordon.marketsquareserver.controller;
 import com.theophilusgordon.marketsquareserver.dto.OrderDto;
 import com.theophilusgordon.marketsquareserver.entity.Order;
 import com.theophilusgordon.marketsquareserver.service.OrderService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,7 +21,7 @@ public class OrderController {
     }
 
     @PostMapping
-    public ResponseEntity<Order> createOrder(@RequestBody OrderDto orderDto){
+    public ResponseEntity<Order> createOrder(@Valid @RequestBody OrderDto orderDto){
         Order createdOrder = orderService.createOrder(orderDto);
         return new ResponseEntity<>(createdOrder, HttpStatus.CREATED);
     }
@@ -32,7 +33,7 @@ public class OrderController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Order> updateOrder(@PathVariable UUID id, @RequestBody Order order){
+    public ResponseEntity<Order> updateOrder(@PathVariable UUID id, @Valid @RequestBody Order order){
         order.setId(id);
         Order updatedOrder = orderService.updateOrder(order);
         return ResponseEntity.ok(updatedOrder);

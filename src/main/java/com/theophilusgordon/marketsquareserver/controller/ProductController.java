@@ -3,6 +3,7 @@ package com.theophilusgordon.marketsquareserver.controller;
 import com.theophilusgordon.marketsquareserver.dto.ProductDto;
 import com.theophilusgordon.marketsquareserver.entity.Product;
 import com.theophilusgordon.marketsquareserver.service.ProductService;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,7 +23,7 @@ public class ProductController {
 
     @PostMapping
 //    @PreAuthorize("hasRole('ROLE_SELLER')")
-    public ResponseEntity<Product> createProduct(@RequestBody ProductDto productDto) {
+    public ResponseEntity<Product> createProduct(@Valid @RequestBody ProductDto productDto) {
         Product createdProduct = productService.createProduct(productDto);
         return new ResponseEntity<>(createdProduct, HttpStatus.CREATED);
     }
@@ -42,7 +43,7 @@ public class ProductController {
 
     @PutMapping("/{id}")
 //    @PreAuthorize("hasRole('ROLE_SELLER')")
-    public ResponseEntity<Product> updateProduct(@PathVariable UUID id, @RequestBody Product product) {
+    public ResponseEntity<Product> updateProduct(@PathVariable UUID id, @Valid @RequestBody Product product) {
         Product updatedProduct = productService.updateProduct(id, product);
         return new ResponseEntity<>(updatedProduct, HttpStatus.OK);
     }
