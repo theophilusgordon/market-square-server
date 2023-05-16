@@ -25,6 +25,17 @@ spring:
             file-size-threshold: 2MB
             max-file-size: 5MB
             max-request-size: 10MB
+    mail:
+        host: smtp.gmail.com
+        port: 587
+        username: ${EMAIL_USERNAME}
+        password: ${EMAIL_PASSWORD}
+        properties:
+            mail:
+                smtp:
+                    auth: true
+                    starttls:
+                        enable: true
 
 hibernate:
     dialect: org.hibernate.dialect.PostgreSQLDialect

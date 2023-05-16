@@ -3,6 +3,7 @@ package com.theophilusgordon.marketsquareserver.controller;
 import com.theophilusgordon.marketsquareserver.dto.UserDto;
 import com.theophilusgordon.marketsquareserver.entity.User;
 import com.theophilusgordon.marketsquareserver.service.UserService;
+import com.theophilusgordon.marketsquareserver.utils.EmailSenderService;
 import com.theophilusgordon.marketsquareserver.utils.mapper.EntityObjectMapper;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -20,11 +21,13 @@ public class UserController {
 
     private final UserService userService;
     private final EntityObjectMapper entityObjectMapper;
+    private final EmailSenderService emailSenderService;
 
     @PostMapping("/register")
     public ResponseEntity<UserDto> createUser(@Valid @RequestBody UserDto userDto) {
         User createUser = userService.createUser(userDto);
         UserDto createdUserDto = entityObjectMapper.convertToUserDto(createUser);
+        emailSenderService.sendEmail(userDto.getEmail(), "Welcome to MarketSquare!", "Thank you for registering with MarketSquare!");
         return new ResponseEntity<>(createdUserDto, HttpStatus.CREATED);
     }
 
